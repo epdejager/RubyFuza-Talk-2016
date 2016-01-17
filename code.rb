@@ -13,20 +13,153 @@ e = class << my_obj
   self
 end
 
-e.instance_methods
+e.instance_methods.first
 e.superclass
+
+class << my_obj
+  def my_obj_method
+    puts :my_obj_method
+  end
+end
+my_obj.singleton_methods
+
 
 class_e = class << MyClass
   self
 end
+
 class_e.superclass
+
 superclass_e = class << MySuperClass
   self
 end
 
 ############################
-# Trying to use class_evala
+# Class and Instance no surprises
 ############################
+
+MyClass.class_eval do
+  self
+end
+
+m = MyClass.new
+m.instance_eval do
+  self
+end
+
+MyClass.class_eval do
+  def bye
+    puts :bye
+  end
+end
+
+m.bye
+MyClass.new.bye
+
+
+m.instance_eval do
+  def hello
+    puts :hello
+  end
+end
+
+m.singleton_methods
+
+MyClass.class_eval do
+  def self.later
+    puts :later
+  end
+end
+
+MyClass.singleton_methods
+
+m.instance_eval do
+  def self.hi
+    puts :hi
+  end
+end
+
+m.singleton_methods
+[:hi, :hello]
+
+############################
+# Now lets mix - SELF
+############################
+
+MyClass.instance_eval do
+  self
+end
+
+m.class_eval do
+  self
+end
+
+
+############################
+# Now lets mix - METHODS
+############################
+MyClass.instance_eval do
+  def sup
+    puts :sup
+  end
+end
+
+MyClass.singleton_methods
+
+MyClass.instance_eval do
+  def self.yo
+    puts :yo
+  end
+end
+
+MyClass.singleton_methods
+
+
+
+m.class_eval do
+  def fred
+    puts :fred_is_that_you?
+  end
+end
+
+m.fred
+MyClass.new.fred
+
+### add an instance method to the class? good show
+### so same as instance_eval then
+
+m.class_eval do
+  def self.bob
+    puts :bob?
+  end
+end
+m.bob
+
+e = class << m
+  self
+end
+e.bob
+
+######################
+# Extend
+######################
+
+module MyModule
+  def my_method
+    puts :in_my_method
+  end
+end
+
+obj = Object.new
+obj.extend MyModule
+obj.my_method
+
+#########################################
+# Slides Code
+#########################################
+######################
+# Initial Confustion
+######################
 
 # attempt 1
 module MyModule
@@ -88,78 +221,6 @@ class << self
   end
 end
 
-
-############################
-# Lets test self
-############################
-
-MyClass.class_eval do
-  self
-end
-MyClass.instance_eval do
-  self
-end
-
-
-m = MyClass.new
-m.class_eval do
-  self
-end
-m.instance_eval do
-  self
-end
-
-# instance_eval on an obj and self
-m.instance_eval do
-  def self.hi
-    puts :hi
-  end
-end
-m.instance_eval do
-  def hello
-    puts :hello
-  end
-end
-
-m.singleton_methods
-[:hi, :hello]
-
-# class_eval and self
-MyClass.class_eval do
-  def bye
-    puts :bye
-  end
-end
-MyClass.class_eval do
-  def self.later
-    puts :later
-  end
-end
-
-# Now lets mess it up
-m.class_eval do
-  def fred
-    puts :fred_is_that_you?
-  end
-end
-m.fred
-my_obj.fred
-
-### add an instance mehtod to the class? good show
-### so same as instance_eval then
-
-m.class_eval do
-  def self.bob
-    puts :bob?
-  end
-end
-m.bob
-
-e = class << m
-  self
-end
-e.bob
-
 ######################
 # Class methods = Singleton methods
 ######################
@@ -198,3 +259,4 @@ class MyClass
   include MyModule # instance methods => instance methods
   extend MyModule # instance methods => class methods
 end
+
