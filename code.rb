@@ -7,6 +7,9 @@ end
 class MyClass < MySuperClass
 end
 
+MyClass.ancestors
+
+
 my_obj = MyClass.new
 
 e = class << my_obj
