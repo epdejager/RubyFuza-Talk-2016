@@ -19,6 +19,8 @@ end
 e.instance_methods.first
 e.superclass
 
+e == my_obj.singleton_class
+
 class << my_obj
   def my_obj_method
     puts :my_obj_method
@@ -263,3 +265,20 @@ class MyClass
   extend MyModule # instance methods => class methods
 end
 
+######################
+# Include in Eigenclass
+######################
+
+class MyClass
+  blah blah blah
+  ...
+  class << self
+    blah blah
+    blah blah
+    ...
+    include MyModule
+    ...
+    blah
+  end
+  blah
+end
