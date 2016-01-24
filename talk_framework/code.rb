@@ -248,6 +248,41 @@ class MyClass
 end
 
 ######################
+# Class and Instance Eval no Surprises
+######################
+
+# instance method
+MyClass.class_eval do
+  def bye
+    puts :bye
+  end
+end
+
+# class method
+MyClass.class_eval do
+  def self.later
+    puts :later
+  end
+end
+
+
+m = MyClass.new
+
+# singleton method
+m.instance_eval do
+  def hello
+    puts :hello
+  end
+end
+
+# singleton method
+m.instance_eval do
+  def self.hi
+    puts :hi
+  end
+end
+
+######################
 # include and extend
 ######################
 module MyModule
