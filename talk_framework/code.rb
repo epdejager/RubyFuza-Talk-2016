@@ -1,3 +1,7 @@
+############################
+# Ancestors chain
+############################
+
 class MySuperClass
   def my_method
     puts :my_method
@@ -9,6 +13,9 @@ end
 
 MyClass.ancestors
 
+############################
+# Eigenclasses
+############################
 
 my_obj = MyClass.new
 
@@ -19,15 +26,23 @@ end
 e.instance_methods.first
 e.superclass
 
-e == my_obj.singleton_class
+###
+
+e = my_obj.singleton_class
+
+###
 
 class << my_obj
   def my_obj_method
     puts :my_obj_method
   end
 end
+
 my_obj.singleton_methods
 
+############################
+# Eigenclasses of Classes
+############################
 
 class_e = class << MyClass
   self
@@ -40,7 +55,67 @@ superclass_e = class << MySuperClass
 end
 
 ############################
-# Class and Instance no surprises
+# Lets mix evals - SELF
+############################
+
+MyClass.instance_eval do
+  self
+end
+
+m = MyClass.new
+m.class_eval do
+  self
+end
+
+############################
+# Lets mix evals - METHODS
+############################
+MyClass.instance_eval do
+  def hi
+    puts :hi
+  end
+end
+
+MyClass.singleton_methods
+
+MyClass.instance_eval do
+  def self.bye
+    puts :bye
+  end
+end
+
+MyClass.singleton_methods
+
+###
+
+m.class_eval do
+  def fred
+    puts :fred_is_that_you?
+  end
+end
+
+m.fred
+MyClass.new.fred
+
+###
+
+m.class_eval do
+  def self.bob
+    puts :bob?
+  end
+end
+m.bob
+
+m_e = class << m
+  self
+end
+m_e.bob
+
+############################
+############################
+
+############################
+# No surprises
 ############################
 
 MyClass.class_eval do
@@ -86,64 +161,6 @@ end
 
 m.singleton_methods
 [:hi, :hello]
-
-############################
-# Now lets mix - SELF
-############################
-
-MyClass.instance_eval do
-  self
-end
-
-m.class_eval do
-  self
-end
-
-
-############################
-# Now lets mix - METHODS
-############################
-MyClass.instance_eval do
-  def sup
-    puts :sup
-  end
-end
-
-MyClass.singleton_methods
-
-MyClass.instance_eval do
-  def self.yo
-    puts :yo
-  end
-end
-
-MyClass.singleton_methods
-
-
-
-m.class_eval do
-  def fred
-    puts :fred_is_that_you?
-  end
-end
-
-m.fred
-MyClass.new.fred
-
-### add an instance method to the class? good show
-### so same as instance_eval then
-
-m.class_eval do
-  def self.bob
-    puts :bob?
-  end
-end
-m.bob
-
-e = class << m
-  self
-end
-e.bob
 
 ######################
 # Extend
