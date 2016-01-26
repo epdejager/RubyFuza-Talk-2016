@@ -104,7 +104,6 @@ m.class_eval do
     puts :bob?
   end
 end
-m.bob
 
 m_e = class << m
   self
