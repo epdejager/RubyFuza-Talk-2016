@@ -97,6 +97,8 @@ end
 m.fred
 MyClass.new.fred
 
+m.singleton_methods
+
 ###
 
 m.class_eval do
@@ -109,6 +111,8 @@ m_e = class << m
   self
 end
 m_e.bob
+
+m_e.singleton_methods
 
 ############################
 ############################
