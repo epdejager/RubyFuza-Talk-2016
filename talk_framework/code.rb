@@ -54,6 +54,8 @@ superclass_e = class << MySuperClass
   self
 end
 
+class_e.ancestors
+
 ############################
 # Lets mix evals - SELF
 ############################
@@ -107,9 +109,7 @@ m.class_eval do
   end
 end
 
-m_e = class << m
-  self
-end
+m_e = m.singleton_class
 m_e.bob
 
 m_e.singleton_methods
